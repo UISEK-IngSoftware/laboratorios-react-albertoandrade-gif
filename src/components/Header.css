@@ -1,0 +1,16 @@
+.pokedex-navbar {
+  margin-bottom: 24px;
+}
+
+.header-toolbar {
+  display: flex;
+  justify-content: center;
+  min-height: 170px;
+  padding: 16px 0;
+}
+
+.pokedex-logo {
+  display: block;
+  width: min(100%, 420px);
+  height: auto;
+}
