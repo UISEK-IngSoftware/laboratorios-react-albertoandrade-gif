@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Credenciales locales de Thunder Client
+thunder-client/*.local.env
+thunder-client/*.local.postman_environment.json

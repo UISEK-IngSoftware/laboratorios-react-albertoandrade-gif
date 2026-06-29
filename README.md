@@ -1,172 +1,67 @@
-# React: Pokédex
+# Pokédex React — integración con Django y OAuth2
 
-## Descripción General
-Este repositorio contiene tres laboratorios progresivos para construir una aplicación Pokédex completa usando React, Material UI y consumo de APIs REST.
+Proyecto de **Alberto Sebastián Andrade Endara** para consumir la API REST de Pokédex desarrollada en Django.
 
----
+## Funcionalidades
 
-## Laboratorio 9: Introducción a React, Componentes y MUI
+- Consulta pública de Pokémon y entrenadores mediante `GET`.
+- Inicio de sesión OAuth2 mediante `/o/token/`.
+- Token Bearer agregado automáticamente con un interceptor de Axios.
+- Rutas protegidas para crear y editar.
+- Creación, actualización y eliminación de Pokémon.
+- Creación, actualización y eliminación de entrenadores.
+- Carga opcional de imágenes y fotografías con `FormData`.
+- Cierre de sesión y revocación del token.
+- Colección importable en Thunder Client con las nueve peticiones mostradas en clase.
 
-### Objetivo
-Construir el layout de una aplicación Pokédex utilizando React y Material UI. Se trabajará con datos simulados y se crearán componentes reutilizables.
+## Variables de entorno
 
-### Requisitos previos
-- Node.js y npm instalados
-- Editor de código (recomendado: VS Code)
-- Navegador actualizado (recomendado: Chrome)
-- React (usar Vite)
+Copia `.env.example` como `.env` y configura:
 
-### Requisitos técnicos
-- Material UI (@mui/material, @emotion/react, @emotion/styled)
-- Datos simulados (sin consumo de API)
-
-### Estructura del proyecto
-```
-/src
-  /components
-    Header.jsx
-    PokemonCard.jsx
-  /pages
-    App.jsx
-  /data
-    pokemons.js
-  main.jsx
+```env
+VITE_API_BASE_URL=http://localhost:8000/api
+VITE_AUTH_BASE_URL=http://localhost:8000/o
+VITE_MEDIA_URL=http://localhost:8000/media
+VITE_CLIENT_ID=TU_CLIENT_ID
+VITE_CLIENT_SECRET=TU_CLIENT_SECRET
 ```
 
----
+El archivo `.env` está ignorado por Git. Las variables que comienzan con `VITE_` se incluyen en el código del navegador; esta configuración es válida para el laboratorio local, pero un sistema real debe usar un flujo OAuth apropiado para clientes públicos, como Authorization Code con PKCE.
 
-## Laboratorio 10: Llamadas a API REST con Axios
+## Ejecución
 
-### Objetivo
-Integrar llamadas a una API REST generada en Django (laboratorios 5-8 en otro repositorio) para consumir datos de Pokémon en tiempo real.
+Primero inicia Django en el puerto 8000. Luego, en este proyecto:
 
-### Requisitos técnicos
-- Axios para realizar peticiones HTTP
-- Variables de entorno (.env) para configurar URLs de API
-- Servicios reutilizables para las llamadas a API
-
-### Nuevas características
-- Consumo de endpoint `/api/pokemons/` para obtener lista de Pokémon
-- Configuración de URL base de API en variables de entorno
-- Creación de servicios en `pokemonService.js`
-
-### Estructura actualizada
-```
-/src
-  /components
-    #### Tus componentes irán aquí
-  /pages
-    App.jsx
-  /services
-    #### Tus servicios irán aquí
-  .env
-  main.jsx
+```bash
+npm install
+npm run dev
 ```
 
-### Variables de entorno (.env)
+Abre `http://localhost:5173`.
+
+## Rutas de React
+
+- `/`: lista de Pokémon.
+- `/trainers`: lista de entrenadores.
+- `/login`: autenticación OAuth2.
+- `/pokemons/add`: crear Pokémon.
+- `/pokemons/:id/edit`: editar Pokémon.
+- `/trainers/add`: crear entrenador.
+- `/trainers/:id/edit`: editar entrenador.
+
+## Thunder Client
+
+En `thunder-client/` se incluyen:
+
+- `thunder-collection_Pokedex.json`: colección con Pokémon, entrenadores y login.
+- `Pokedex.local.env`: ambiente local listo para importar. Cambia `password` por la contraseña real del usuario de Django.
+- `Pokedex.example.env`: plantilla sin credenciales.
+
+Importa primero el ambiente y después la colección. Ejecuta `LoginPokedex`; la prueba guarda automáticamente `json.access_token` en `{{access_token}}`. Después puedes ejecutar POST, PUT y DELETE con el encabezado Bearer ya configurado.
+
+## Verificación
+
+```bash
+npm run lint
+npm run build
 ```
-VITE_API_BASE_URL=http://localhost:8000
-VITE_API_MEDIA_URL=${VITE_API_BASE_URL}/media/
-```
-
----
-
-## Laboratorio 11: Llamadas a API REST con Axios y Gestión de Autorización
-
-### Objetivo
-Implementar un sistema completo de autenticación OAuth con Django, incluyendo login, logout y protección de rutas.
-
-### Requisitos técnicos
-- Autenticación OAuth con Django
-- Gestión de tokens de acceso en localStorage
-- Interceptores de Axios para agregar tokens a las peticiones
-- Rutas protegidas con React Router
-- Formulario de login y creación de Pokémon
-
-### Nuevas características
-- Página de login con autenticación OAuth (`/login`)
-- Página para agregar Pokémon (`/add-pokemon`)
-- Sistema de logout con revocación de token
-- Protección de rutas basada en autenticación
-- Conversión de imágenes a base64
-- Interceptores de Axios para autorización
-
-### Estructura actualizada
-```
-/src
-  /components
-    Header.jsx
-    PokemonCard.jsx
-  /pages
-    App.jsx
-    Login.jsx
-    AddPokemon.jsx
-  /services
-    pokemonService.js
-  .env
-  main.jsx
-```
-
-### Variables de entorno (.env)
-```
-VITE_API_BASE_URL=http://localhost:8000
-VITE_API_MEDIA_URL=${VITE_API_BASE_URL}/media/
-VITE_API_CLIENT_ID=tu_client_id
-VITE_API_CLIENT_SECRET=tu_client_secret
-```
-
----
-
-## Instalación del proyecto
-
-1. **Clonar el repositorio** (este paso lo hará GitHub Classroom automáticamente).
-2. Abrir en VS Code la carpeta de tu repositorio clonado
-3. Instalar las dependencias base:
-   ```bash
-   npm install
-   ```
-4. Instalar Material UI y sus dependencias:
-   ```bash
-   npm install @mui/material @emotion/react @emotion/styled
-   ```
-5. Instalar Axios (necesario desde Laboratorio 10):
-   ```bash
-   npm install axios
-   ```
-6. Instalar React Router (necesario desde Laboratorio 11):
-   ```bash
-   npm install react-router-dom
-   ```
-
-### Comandos útiles
-- Ejecutar el servidor de desarrollo
-    ```bash
-    npm run dev
-    ```
-- Comprobar versión de dependencias
-    ```bash
-    npm list
-    ```
-- Limpiar dependencias
-    ```bash
-    rm -rf node_modules
-    npm install
-    ```
-
-### Comandos git
-- Verificar los archivos modificados
-    ```bash
-    git status
-    ```
-- Agregar archivos al área de preparación
-    ```bash
-    git add .
-    ```
-- Realizar un commit
-    ```bash
-    git commit -m "Laboratorio [9/10/11]: descripción de cambios"
-    ```
-- Enviar los cambios a github
-    ```bash
-    git push
-    ```

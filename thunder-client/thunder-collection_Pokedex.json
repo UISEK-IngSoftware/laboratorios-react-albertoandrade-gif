@@ -1,0 +1,253 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "Pokedex",
+  "collectionId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+  "dateExported": "2026-06-29T18:16:31.907393Z",
+  "version": "1.2",
+  "folders": [
+    {
+      "_id": "aec3c826-0b25-40b5-bddb-44215b4e5294",
+      "name": "Pokedex",
+      "containerId": "",
+      "created": "2026-06-29T18:16:31.907393Z",
+      "sortNum": 10000
+    },
+    {
+      "_id": "8fa82503-b193-4c01-85cf-ec11a4a965d0",
+      "name": "Trainer",
+      "containerId": "",
+      "created": "2026-06-29T18:16:31.907393Z",
+      "sortNum": 20000
+    },
+    {
+      "_id": "7d6a0d2a-71c8-4b4d-bf9d-8dc624e633ef",
+      "name": "User Management",
+      "containerId": "",
+      "created": "2026-06-29T18:16:31.907393Z",
+      "sortNum": 30000
+    }
+  ],
+  "requests": [
+    {
+      "_id": "46ef16fe-db95-4258-83f7-fb08df6a60f7",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "aec3c826-0b25-40b5-bddb-44215b4e5294",
+      "name": "Obtener un pokemon",
+      "url": "{{base_url}}/pokemons/1/",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [],
+      "params": []
+    },
+    {
+      "_id": "892688c8-76bc-490a-b48f-40235bc1f44f",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "aec3c826-0b25-40b5-bddb-44215b4e5294",
+      "name": "Add Pokemon",
+      "url": "{{base_url}}/pokemons/",
+      "method": "POST",
+      "sortNum": 20000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{access_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Pikachu\",\n  \"type\": \"Eléctrico\",\n  \"height\": 0.4,\n  \"weight\": 6.0,\n  \"trainer\": null\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "47cb18eb-e166-4d12-9e58-c5a21c2e6731",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "aec3c826-0b25-40b5-bddb-44215b4e5294",
+      "name": "Edit Pokemon",
+      "url": "{{base_url}}/pokemons/1/",
+      "method": "PUT",
+      "sortNum": 30000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{access_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Pikachu Editado\",\n  \"type\": \"Eléctrico\",\n  \"height\": 0.4,\n  \"weight\": 6.2,\n  \"trainer\": null\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "4a70ec37-5bad-4537-ac75-643ea95cc216",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "aec3c826-0b25-40b5-bddb-44215b4e5294",
+      "name": "Delete pokemon",
+      "url": "{{base_url}}/pokemons/1/",
+      "method": "DELETE",
+      "sortNum": 40000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{access_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": []
+    },
+    {
+      "_id": "5538a959-4385-4b3f-b7cf-759a1c5b27a0",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "8fa82503-b193-4c01-85cf-ec11a4a965d0",
+      "name": "Trainers",
+      "url": "{{base_url}}/entrenadores/",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [],
+      "params": []
+    },
+    {
+      "_id": "c46ac5d1-61e7-48ee-a42a-7e314a035bee",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "8fa82503-b193-4c01-85cf-ec11a4a965d0",
+      "name": "Add Trainer",
+      "url": "{{base_url}}/entrenadores/",
+      "method": "POST",
+      "sortNum": 20000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{access_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Misty\",\n  \"age\": 18,\n  \"city\": \"Ciudad Celeste\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "e16fdffa-edac-4a79-810e-2fef7d926466",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "8fa82503-b193-4c01-85cf-ec11a4a965d0",
+      "name": "Edit Trainer",
+      "url": "{{base_url}}/entrenadores/1/",
+      "method": "PUT",
+      "sortNum": 30000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{access_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Misty Editada\",\n  \"age\": 19,\n  \"city\": \"Ciudad Celeste\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "59d57e63-37a0-4dff-a124-800f69b3077b",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "8fa82503-b193-4c01-85cf-ec11a4a965d0",
+      "name": "Delete Trainer",
+      "url": "{{base_url}}/entrenadores/1/",
+      "method": "DELETE",
+      "sortNum": 40000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{access_token}}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": []
+    },
+    {
+      "_id": "ca22d9a1-66cc-4df6-84f2-61497d448673",
+      "colId": "c2e227f2-972b-4258-b1aa-080a0565790f",
+      "containerId": "7d6a0d2a-71c8-4b4d-bf9d-8dc624e633ef",
+      "name": "LoginPokedex",
+      "url": "{{auth_url}}/token/",
+      "method": "POST",
+      "sortNum": 10000,
+      "created": "2026-06-29T18:16:31.907393Z",
+      "modified": "2026-06-29T18:16:31.907393Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/x-www-form-urlencoded"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "text",
+        "raw": "grant_type=password&username={{username}}&password={{password}}&client_id={{client_id}}&client_secret={{client_secret}}&scope=read%20write",
+        "form": []
+      },
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.access_token",
+          "action": "setto",
+          "value": "{{access_token}}"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "headers": [],
+    "tests": [],
+    "options": {}
+  },
+  "ref": "fbacfb6f28fa4389a1f0295d1374fac6"
+}
