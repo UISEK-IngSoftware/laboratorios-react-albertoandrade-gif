@@ -1,0 +1,14 @@
+.pokemon-list-section {
+  width: 100%;
+}
+
+.pokemon-list-title {
+  margin-bottom: 24px !important;
+  color: #263238;
+  font-weight: 700 !important;
+  text-align: center;
+}
+
+.pokemon-list-section .MuiAlert-root {
+  margin-bottom: 24px;
+}

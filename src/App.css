@@ -3,14 +3,14 @@ body,
 #root {
   min-height: 100%;
   margin: 0;
-  padding: 0;
 }
 
-main {
-  width: 100%;
+body {
+  background: linear-gradient(135deg, #eef3f8 0%, #dce7f2 100%);
 }
 
-.pokemon-container {
-  padding-top: 8px;
-  padding-bottom: 40px;
+.main-container {
+  padding-top: 24px;
+  padding-bottom: 48px;
 }
+

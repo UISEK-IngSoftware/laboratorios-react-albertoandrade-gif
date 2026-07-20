@@ -1,56 +1,71 @@
-import { AppBar, Button, Container, Toolbar } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../auth/useAuth";
-import pokedexLogo from "../assets/pokedex-logo.png";
-import "./Header.css";
+import { AppBar, Container, Toolbar, Button } from "@mui/material";
+import pokedexLogo from '../assets/pokedex-logo.png';
+import './Header.css';
+import { isLoggedIn, logout } from "../services/authService";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const { isAuthenticated, signOut } = useAuth();
-  const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await signOut();
-    navigate("/login");
-  };
+    const [loggedIn, setLoggedIn] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
 
-  return (
-    <AppBar position="static" className="pokedex-navbar">
-      <Container maxWidth="lg">
-        <Toolbar className="header-toolbar">
-          <img
-            className="pokedex-logo"
-            src={pokedexLogo}
-            alt="Logo de Pokédex"
-          />
-        </Toolbar>
+    useEffect(() => {
+        setLoggedIn(isLoggedIn());
+    }, [location.pathname]);
 
-        <Toolbar className="navigation-toolbar">
-          <Button color="inherit" component={Link} to="/">
-            Pokémon
-          </Button>
-          <Button color="inherit" component={Link} to="/trainers">
-            Entrenadores
-          </Button>
+    const handleLogout = async () => {
+        await logout();
+        setLoggedIn(false);
+        navigate("/");
+    };
 
-          {isAuthenticated ? (
-            <>
-              <Button color="inherit" component={Link} to="/pokemons/add">
-                Agregar Pokémon
-              </Button>
-              <Button color="inherit" component={Link} to="/trainers/add">
-                Agregar Entrenador
-              </Button>
-              <Button color="inherit" onClick={handleLogout}>
-                Cerrar sesión
-              </Button>
-            </>
-          ) : (
-            <Button color="inherit" component={Link} to="/login">
-              Iniciar sesión
-            </Button>
-          )}
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
+    return (
+        <div className="pokedex-navbar">
+            <AppBar position="static" elevation={4}>
+                <Container maxWidth="lg">
+
+                    {/* Logo */}
+                    <Toolbar>
+                        <div className="image-container">
+                            <img
+                                src={pokedexLogo}
+                                alt="Logo"
+                                className="pokedex-logo"
+                            />
+                        </div>
+                    </Toolbar>
+
+
+                    {/* Menú */}
+                    <Toolbar>
+
+                        <Button color="inherit" component={Link} to="/">
+                            Inicio
+                        </Button>
+
+
+                        {loggedIn ? (
+                            <>
+                                <Button color="inherit" component={Link} to="/add">
+                                    Agregar Pokémon
+                                </Button>
+
+                                <Button color="inherit" onClick={handleLogout}>
+                                    Cerrar Sesión
+                                </Button>
+                            </>
+                        ) : (
+                            <Button color="inherit" component={Link} to="/login">
+                                Iniciar Sesión
+                            </Button>
+                        )}
+
+                    </Toolbar>
+
+                </Container>
+            </AppBar>
+        </div>
+    );
 }

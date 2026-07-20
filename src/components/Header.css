@@ -1,25 +1,33 @@
 .pokedex-navbar {
-  margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
-.header-toolbar {
-  display: flex;
-  justify-content: center;
-  min-height: 150px;
-  padding: 16px 0 8px;
+.pokedex-navbar .MuiAppBar-root {
+    background: linear-gradient(135deg, #0789c1 0%, #19a7dc 55%, #087fb8 100%);
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 0;
 }
 
 .pokedex-logo {
-  display: block;
-  width: min(100%, 420px);
-  height: auto;
+    width: min(280px, 80vw);
+    height: 120px;
+    object-fit: contain;
 }
 
-.navigation-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  min-height: 52px;
-  padding-bottom: 8px;
+.pokedex-navbar .MuiToolbar-root:last-child {
+    justify-content: center;
+    gap: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.pokedex-navbar .MuiToolbar-root:first-of-type {
+    justify-content: center;
+    width: 100%;
 }

@@ -1,0 +1,17 @@
+.pokemon-card {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 16px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 26px rgba(26, 39, 56, 0.2);
+}
+
+.pokemon-image {
+  object-fit: contain !important;
+  padding: 18px;
+  background: radial-gradient(circle, #ffffff 0%, #edf2f7 100%);
+}

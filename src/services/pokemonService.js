@@ -1,25 +1,50 @@
-import apiClient from "./apiClient";
+import axios from 'axios';
 
-export async function fetchPokemons() {
-  const response = await apiClient.get("/pokemons/");
-  return response.data;
-}
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
 
-export async function fetchPokemon(id) {
-  const response = await apiClient.get(`/pokemons/${id}/`);
-  return response.data;
-}
+const apiClient = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-export async function createPokemon(formData) {
-  const response = await apiClient.post("/pokemons/", formData);
-  return response.data;
-}
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  }
+);
 
-export async function updatePokemon(id, formData) {
-  const response = await apiClient.put(`/pokemons/${id}/`, formData);
-  return response.data;
-}
+export const fetchPokemons = async () => {
+    try {
+        const response = await apiClient.get('/pokemons/');
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener la lista de Pokémon:", error);
+        throw error;
+    }
+};
 
-export async function deletePokemon(id) {
-  await apiClient.delete(`/pokemons/${id}/`);
-}
+export const addPokemon = async (pokemonData) => {
+  const payload = new FormData();
+  payload.append('name', pokemonData.name);
+  payload.append('type', pokemonData.type);
+  payload.append('weight', pokemonData.weight);
+  payload.append('height', pokemonData.height);
+
+  if (pokemonData.image) {
+    payload.append('image', pokemonData.image);
+  }
+
+  try {
+    const response = await apiClient.post('/pokemons/', payload);
+    return response.data;
+  } catch (error) {
+    console.error("Error al agregar Pokémon:", error);
+    throw error;
+  }
+};

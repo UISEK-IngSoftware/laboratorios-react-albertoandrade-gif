@@ -1,77 +1,39 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Chip,
-  Stack,
-  Typography,
-} from "@mui/material";
-import "./PokemonCard.css";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import "./PokedexCard.css";
 
-function resolvePokemonImage(pokemon) {
-  const source = pokemon.image || pokemon.picture;
-
-  if (!source) {
-    return "";
-  }
-
-  if (/^https?:\/\//i.test(source)) {
-    return source;
-  }
-
-  const mediaUrl = (
-    import.meta.env.VITE_MEDIA_URL || "http://localhost:8000/media"
-  ).replace(/\/$/, "");
-
-  if (source.startsWith("/media/")) {
-    return `${new URL(mediaUrl).origin}${source}`;
-  }
-
-  return `${mediaUrl}/${source.replace(/^\//, "")}`;
-}
-
-export default function PokemonCard({ pokemon, canManage, onEdit, onDelete }) {
-  const imageUrl = resolvePokemonImage(pokemon);
-
+export default function PokemonCard({ pokemon }) {
+    const imageUrl = pokemon.image || pokemon.picture || "";
   return (
-    <Card className="pokemon-card" elevation={3}>
-      {imageUrl && (
+    <Card className="pokemon-card" elevation={4}>
         <CardMedia
-          className="pokemon-image"
-          component="img"
-          image={imageUrl}
-          alt={pokemon.name}
+            className="pokemon-image"
+            component="img"
+            height="300"
+            image={imageUrl}
+            alt={pokemon.name}
         />
-      )}
+        <CardContent>
+            <Typography variant="h5" component="div">
+                {pokemon.name}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Tipo: {pokemon.type}
+            </Typography>
 
-      <CardContent>
-        <Typography variant="h5" component="h2" gutterBottom>
-          {pokemon.name}
-        </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Altura: {pokemon.height} m
+            </Typography>
 
-        <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-          <Chip label={`Tipo: ${pokemon.type}`} variant="outlined" />
-          <Chip label={`Altura: ${pokemon.height}`} variant="outlined" />
-          <Chip label={`Peso: ${pokemon.weight}`} variant="outlined" />
-        </Stack>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Peso: {pokemon.weight} kg
+            </Typography>
 
-        <Typography variant="body2" sx={{ mt: 2 }} color="text.secondary">
-          Entrenador: {pokemon.trainer_name || "Sin entrenador"}
-        </Typography>
-      </CardContent>
+            <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
+                Entrenador: {pokemon.trainer_name || "Sin entrenador"}
+            </Typography>
 
-      {canManage && (
-        <CardActions>
-          <Button size="small" onClick={() => onEdit(pokemon.id)}>
-            Editar
-          </Button>
-          <Button size="small" color="error" onClick={() => onDelete(pokemon)}>
-            Eliminar
-          </Button>
-        </CardActions>
-      )}
+        </CardContent>
+
     </Card>
-  );
+  )
 }

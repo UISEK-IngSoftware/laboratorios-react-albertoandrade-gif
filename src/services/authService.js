@@ -1,67 +1,58 @@
-import axios from "axios";
-import {
-  clearTokens,
-  getAccessToken,
-  saveTokens,
-} from "./tokenStorage";
+import axios from 'axios';
 
-const AUTH_BASE_URL = (
-  import.meta.env.VITE_AUTH_BASE_URL || "http://localhost:8000/o"
-).replace(/\/$/, "");
-
+const API_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL || 'http://127.0.0.1:8000/o';
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET;
 
-function requireOAuthConfiguration() {
-  if (!CLIENT_ID || !CLIENT_SECRET) {
-    throw new Error(
-      "Faltan VITE_CLIENT_ID o VITE_CLIENT_SECRET en el archivo .env."
-    );
-  }
-}
+const authClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+});
 
-export async function login(username, password) {
-  requireOAuthConfiguration();
+export const login = async (username, password) => {
+    try {
+        let requestBody = new URLSearchParams();
+        requestBody.append('client_id', CLIENT_ID);
+        requestBody.append('client_secret', CLIENT_SECRET);
+        requestBody.append('grant_type', 'password');
+        requestBody.append('username', username);
+        requestBody.append('password', password);
+        const response = await authClient.post('/token/', requestBody);
 
-  const form = new URLSearchParams({
-    grant_type: "password",
-    username,
-    password,
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
-    scope: "read write",
-  });
+        localStorage.setItem(
+            'access_token',
+            response.data.access_token
+        );
 
-  const response = await axios.post(`${AUTH_BASE_URL}/token/`, form, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
+        return response.data;
 
-  saveTokens(response.data);
-  return response.data;
-}
-
-export async function logout() {
-  const token = getAccessToken();
-
-  try {
-    if (token && CLIENT_ID && CLIENT_SECRET) {
-      const form = new URLSearchParams({
-        token,
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-      });
-
-      await axios.post(`${AUTH_BASE_URL}/revoke_token/`, form, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
+    } catch (error) {
+        throw new Error('Error al iniciar sesión: ' + error.message);
     }
-  } catch (error) {
-    console.warn("No se pudo revocar el token en el servidor:", error);
-  } finally {
-    clearTokens();
-  }
-}
+};
+
+export const isLoggedIn = () => {
+    return localStorage.getItem('access_token') !== null;
+};
+
+export const logout = async () => {
+    if (!isLoggedIn()) {
+        return;
+    }
+
+    const token = localStorage.getItem("access_token");
+
+    try {
+        const requestBody = new URLSearchParams();
+        requestBody.append('token', token);
+        requestBody.append('client_id', CLIENT_ID);
+        requestBody.append('client_secret', CLIENT_SECRET);
+        await authClient.post("/revoke_token/", requestBody);
+    } catch (error) {
+        console.error("Error al cerrar sesión: " + error.message);
+    }
+
+    localStorage.removeItem("access_token");
+};

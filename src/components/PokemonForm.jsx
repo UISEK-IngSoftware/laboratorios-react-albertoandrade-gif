@@ -1,225 +1,161 @@
-import { useEffect, useState } from "react";
-import {
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
-import { getApiErrorMessage } from "../services/apiClient";
-import {
-  createPokemon,
-  fetchPokemon,
-  updatePokemon,
-} from "../services/pokemonService";
-import { fetchTrainers } from "../services/trainerService";
+import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 import "./PokemonForm.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { addPokemon } from "../services/pokemonService";
 
-const initialValues = {
-  name: "",
-  type: "",
-  weight: "",
-  height: "",
-  trainer: "",
-};
 
 export default function PokemonForm() {
-  const { id } = useParams();
-  const editing = Boolean(id);
-  const navigate = useNavigate();
-  const [values, setValues] = useState(initialValues);
-  const [image, setImage] = useState(null);
-  const [trainers, setTrainers] = useState([]);
-  const [loading, setLoading] = useState(editing);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
 
-  useEffect(() => {
-    let active = true;
+    const navigate = useNavigate();
 
-    async function loadData() {
-      try {
-        const trainerData = await fetchTrainers();
-        if (active) {
-          setTrainers(
-            Array.isArray(trainerData)
-              ? trainerData
-              : trainerData.results ?? []
-          );
+    const [errorMsg, setErrorMsg] = useState("");
+
+    const [pokemonData, setPokemonData] = useState({
+        name: "",
+        type: "",
+        weight: "",
+        height: "",
+        image: null,
+    });
+
+
+    const handleInputChange = (e) => {
+
+        const { name, value } = e.target;
+
+        if (name === "image") {
+
+            setPokemonData((prevData) => ({
+                ...prevData,
+                image: e.target.files[0],
+            }));
+
+        } else {
+
+            setPokemonData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+
         }
-
-        if (editing) {
-          const pokemon = await fetchPokemon(id);
-          if (active) {
-            setValues({
-              name: pokemon.name ?? "",
-              type: pokemon.type ?? "",
-              weight: pokemon.weight ?? "",
-              height: pokemon.height ?? "",
-              trainer: pokemon.trainer ?? "",
-            });
-          }
-        }
-      } catch (requestError) {
-        if (active) {
-          setError(
-            getApiErrorMessage(
-              requestError,
-              "No se pudieron cargar los datos del formulario."
-            )
-          );
-        }
-      } finally {
-        if (active) {
-          setLoading(false);
-        }
-      }
-    }
-
-    loadData();
-
-    return () => {
-      active = false;
     };
-  }, [editing, id]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setValues((current) => ({ ...current, [name]: value }));
-  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setSaving(true);
-    setError("");
+    const handleSubmit = async (e) => {
 
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("type", values.type);
-    formData.append("weight", values.weight);
-    formData.append("height", values.height);
+        e.preventDefault();
 
-    if (values.trainer !== "") {
-      formData.append("trainer", values.trainer);
-    }
+        try {
 
-    if (image) {
-      formData.append("image", image);
-    }
+            await addPokemon(pokemonData);
 
-    try {
-      if (editing) {
-        await updatePokemon(id, formData);
-      } else {
-        await createPokemon(formData);
-      }
+            alert("Pokémon agregado exitosamente");
 
-      navigate("/");
-    } catch (requestError) {
-      setError(
-        getApiErrorMessage(
-          requestError,
-          editing
-            ? "No se pudo actualizar el Pokémon."
-            : "No se pudo crear el Pokémon."
-        )
-      );
-    } finally {
-      setSaving(false);
-    }
-  };
+            navigate("/");
 
-  if (loading) {
+        } catch (error) {
+
+            console.error("Error al agregar Pokémon:", error);
+
+            setErrorMsg(
+                "Ocurrió un error al agregar el Pokémon. Por favor, inténtalo de nuevo."
+            );
+
+        }
+    };
+
+
     return (
-      <Stack alignItems="center" sx={{ py: 6 }}>
-        <CircularProgress />
-      </Stack>
+        <>
+
+            <Typography variant="h4" gutterBottom>
+                Formulario de Pokémon
+            </Typography>
+
+
+            <Box
+                component="form"
+                className="pokemon-form"
+                onSubmit={handleSubmit}
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                }}
+            >
+
+
+                <TextField
+                    name="name"
+                    label="Nombre"
+                    variant="outlined"
+                    value={pokemonData.name}
+                    onChange={handleInputChange}
+                    required
+                />
+
+
+                <TextField
+                    name="type"
+                    label="Tipo"
+                    variant="outlined"
+                    value={pokemonData.type}
+                    onChange={handleInputChange}
+                    required
+                />
+
+
+                <TextField
+                    name="weight"
+                    label="Peso"
+                    variant="outlined"
+                    value={pokemonData.weight}
+                    onChange={handleInputChange}
+                    type="number"
+                    required
+                />
+
+
+                <TextField
+                    name="height"
+                    label="Altura"
+                    variant="outlined"
+                    value={pokemonData.height}
+                    onChange={handleInputChange}
+                    type="number"
+                    required
+                />
+
+
+                <input
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={handleInputChange}
+                />
+
+
+                {
+                    errorMsg && (
+                        <Alert severity="error">
+                            {errorMsg}
+                        </Alert>
+                    )
+                }
+
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                >
+                    Guardar
+                </Button>
+
+
+            </Box>
+
+        </>
     );
-  }
-
-  return (
-    <section className="pokemon-form-section">
-      <Typography variant="h4" component="h1" gutterBottom>
-        {editing ? "Editar Pokémon" : "Agregar Pokémon"}
-      </Typography>
-
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
-
-      <Box component="form" className="pokemon-form" onSubmit={handleSubmit}>
-        <TextField
-          label="Nombre"
-          name="name"
-          value={values.name}
-          onChange={handleChange}
-          required
-        />
-        <TextField
-          label="Tipo"
-          name="type"
-          value={values.type}
-          onChange={handleChange}
-          required
-        />
-        <TextField
-          label="Peso"
-          name="weight"
-          value={values.weight}
-          onChange={handleChange}
-          type="number"
-          slotProps={{ htmlInput: { min: 0, step: "any" } }}
-          required
-        />
-        <TextField
-          label="Altura"
-          name="height"
-          value={values.height}
-          onChange={handleChange}
-          type="number"
-          slotProps={{ htmlInput: { min: 0, step: "any" } }}
-          required
-        />
-        <TextField
-          select
-          label="Entrenador"
-          name="trainer"
-          value={values.trainer}
-          onChange={handleChange}
-        >
-          <MenuItem value="">Sin entrenador</MenuItem>
-          {trainers.map((trainer) => (
-            <MenuItem key={trainer.id} value={trainer.id}>
-              {trainer.name}
-            </MenuItem>
-          ))}
-        </TextField>
-
-        <label className="picture-field">
-          Imagen {editing && "(opcional: conserva la actual si no eliges otra)"}
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={(event) => setImage(event.target.files?.[0] ?? null)}
-          />
-        </label>
-
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" type="submit" disabled={saving}>
-            {saving ? "Guardando..." : "Guardar"}
-          </Button>
-          <Button variant="outlined" onClick={() => navigate("/")}>
-            Cancelar
-          </Button>
-        </Stack>
-      </Box>
-    </section>
-  );
 }
