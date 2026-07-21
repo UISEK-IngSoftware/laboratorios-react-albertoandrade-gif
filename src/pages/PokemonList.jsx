@@ -6,12 +6,15 @@ import {
     deletePokemon
 } from "../services/pokemonService";
 import "./PokemonList.css";
+import Spinner from "../components/Spinner";
 
 export default function PokemonList() {
     const [pokemons, setPokemons] = useState([]);
-    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const loadPokemons = () => {
+        setLoading(true);
         fetchPokemons()
             .then((data) => {
                 setPokemons(Array.isArray(data) ? data : data.results ?? []);
@@ -19,12 +22,19 @@ export default function PokemonList() {
             .catch((error) => {
                 console.error("Error obteniendo pokemons:", error);
                 setError("No se pudieron cargar los Pokémon. Comprueba que Django esté encendido.");
+            }).finally(() => {
+                setLoading(false);
             });
     };
 
     useEffect(() => {
         loadPokemons();
     }, []);
+
+    if (loading) {
+        return <Spinner />
+        
+    }
 
     const handleDelete = async (id) => {
         const confirmar = window.confirm("¿Deseas eliminar este Pokémon?");
