@@ -3,6 +3,7 @@ import "./PokemonForm.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addPokemon } from "../services/pokemonService";
+import Spinner from "./Spinner";
 
 
 export default function PokemonForm() {
@@ -10,6 +11,7 @@ export default function PokemonForm() {
     const navigate = useNavigate();
 
     const [errorMsg, setErrorMsg] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [pokemonData, setPokemonData] = useState({
         name: "",
@@ -45,6 +47,8 @@ export default function PokemonForm() {
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+        setLoading(true);
+        setErrorMsg("");
 
         try {
 
@@ -62,9 +66,16 @@ export default function PokemonForm() {
                 "Ocurrió un error al agregar el Pokémon. Por favor, inténtalo de nuevo."
             );
 
+        } finally {
+
+            setLoading(false);
+
         }
     };
 
+    if (loading) {
+        return <Spinner message="Guardando Pokémon..." />;
+    }
 
     return (
         <>
@@ -82,6 +93,7 @@ export default function PokemonForm() {
                     display: "flex",
                     flexDirection: "column",
                     gap: 2,
+                    bgcolor: "background.paper",
                 }}
             >
 
@@ -149,6 +161,7 @@ export default function PokemonForm() {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    disabled={loading}
                 >
                     Guardar
                 </Button>

@@ -2,10 +2,6 @@
     margin-bottom: 20px;
 }
 
-.pokedex-navbar .MuiAppBar-root {
-    background: linear-gradient(135deg, #0789c1 0%, #19a7dc 55%, #087fb8 100%);
-}
-
 .image-container {
     display: flex;
     justify-content: center;

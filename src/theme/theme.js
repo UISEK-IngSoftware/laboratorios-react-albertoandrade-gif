@@ -1,36 +1,37 @@
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+const createAppTheme = (mode) => createTheme({
   palette: {
+    mode,
     primary: {
-      main: '#FF6B35',
-      light: '#FFB84D',
-      dark: '#E55100',
+      main: mode === 'light' ? '#0789C1' : '#4FC3F7',
+      light: mode === 'light' ? '#19A7DC' : '#81D4FA',
+      dark: mode === 'light' ? '#005F8A' : '#0288D1',
     },
     secondary: {
-      main: '#004E89',
-      light: '#1B7AA1',
-      dark: '#003D6B',
+      main: mode === 'light' ? '#FF6B35' : '#FF9E80',
+      light: mode === 'light' ? '#FFB84D' : '#FFCCBC',
+      dark: mode === 'light' ? '#E55100' : '#FF6E40',
     },
     background: {
-      default: '#F8F9FA',
-      paper: '#FFFFFF',
+      default: mode === 'light' ? '#EEF3F8' : '#0F1720',
+      paper: mode === 'light' ? '#FFFFFF' : '#18232E',
     },
     text: {
-      primary: '#1A1A1A',
-      secondary: '#666666',
+      primary: mode === 'light' ? '#1A1A1A' : '#F5F7FA',
+      secondary: mode === 'light' ? '#5F6670' : '#B8C2CC',
     },
     success: {
-      main: '#4CAF50',
+      main: mode === 'light' ? '#2E7D32' : '#66BB6A',
     },
     error: {
-      main: '#F44336',
+      main: mode === 'light' ? '#D32F2F' : '#EF5350',
     },
     warning: {
-      main: '#FF9800',
+      main: mode === 'light' ? '#ED6C02' : '#FFA726',
     },
     info: {
-      main: '#2196F3',
+      main: mode === 'light' ? '#0288D1' : '#29B6F6',
     },
   },
   typography: {
@@ -38,32 +39,26 @@ const theme = createTheme({
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,
-      color: '#1A1A1A',
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 600,
-      color: '#1A1A1A',
     },
     h3: {
       fontSize: '1.75rem',
       fontWeight: 600,
-      color: '#1A1A1A',
     },
     h4: {
       fontSize: '1.5rem',
       fontWeight: 600,
-      color: '#1A1A1A',
     },
     h5: {
       fontSize: '1.25rem',
       fontWeight: 500,
-      color: '#1A1A1A',
     },
     h6: {
       fontSize: '1rem',
       fontWeight: 500,
-      color: '#1A1A1A',
     },
     body1: {
       fontSize: '1rem',
@@ -82,6 +77,17 @@ const theme = createTheme({
     borderRadius: 12,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          background:
+            mode === 'light'
+              ? 'linear-gradient(135deg, #EEF3F8 0%, #DCE7F2 100%)'
+              : 'linear-gradient(135deg, #0F1720 0%, #172635 100%)',
+          backgroundAttachment: 'fixed',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -104,10 +110,16 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 12,
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+          boxShadow:
+            mode === 'light'
+              ? '0 2px 8px rgba(0, 0, 0, 0.1)'
+              : '0 2px 10px rgba(0, 0, 0, 0.35)',
           transition: 'all 0.3s ease',
           '&:hover': {
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+            boxShadow:
+              mode === 'light'
+                ? '0 8px 24px rgba(0, 0, 0, 0.15)'
+                : '0 8px 24px rgba(0, 0, 0, 0.5)',
             transform: 'translateY(-4px)',
           },
         },
@@ -119,10 +131,10 @@ const theme = createTheme({
           '& .MuiOutlinedInput-root': {
             borderRadius: 8,
             '&:hover fieldset': {
-              borderColor: '#FF6B35',
+              borderColor: mode === 'light' ? '#0789C1' : '#4FC3F7',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#FF6B35',
+              borderColor: mode === 'light' ? '#0789C1' : '#4FC3F7',
             },
           },
         },
@@ -131,9 +143,15 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#FFFFFF',
-          color: '#1A1A1A',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+          background:
+            mode === 'light'
+              ? 'linear-gradient(135deg, #0789C1 0%, #19A7DC 55%, #087FB8 100%)'
+              : 'linear-gradient(135deg, #0B4F6C 0%, #096B8F 55%, #073B52 100%)',
+          color: '#FFFFFF',
+          boxShadow:
+            mode === 'light'
+              ? '0 2px 8px rgba(0, 0, 0, 0.18)'
+              : '0 2px 10px rgba(0, 0, 0, 0.45)',
         },
       },
     },
@@ -156,4 +174,7 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+export const lightTheme = createAppTheme('light');
+export const darkTheme = createAppTheme('dark');
+
+export default lightTheme;

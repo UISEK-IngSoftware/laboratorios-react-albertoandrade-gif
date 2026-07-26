@@ -32,8 +32,7 @@ export default function PokemonList() {
     }, []);
 
     if (loading) {
-        return <Spinner />
-        
+        return <Spinner /> 
     }
 
     const handleDelete = async (id) => {
